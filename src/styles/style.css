@@ -124,6 +124,19 @@
   margin-top: 5px;
 }
 
+.rating .card-separator {
+  margin: 0 8px;
+  border-left: 1px solid #666;
+}
+
+.order-count {
+  font-size: 12px;
+  color: #999;
+  margin: 5px 0 0 0;
+  font-weight: normal;
+  text-align: center;
+}
+
 .restaurant-card h4 .rating-green,
 .restaurant-card h4 .rating-yellow,
 .restaurant-card h4 .rating-red {
