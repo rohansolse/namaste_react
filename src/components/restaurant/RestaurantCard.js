@@ -9,16 +9,19 @@ const RestaurantCard = (props) => {
         alt="res-logo"
         src={"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/" + cloudinaryImageId}
       />
-      <h3>{name}</h3>
-      <h4>{cuisines.join(", ")}</h4>
-      <h4>
-        <span className={
-          avgRating >= 4.5 ? 'rating-green' :
-          avgRating >= 4.0 ? 'rating-yellow' : 'rating-red'
-        }>
-          {avgRating}
-        </span> stars
-      </h4>
+      <div className="res-card-content">
+        <div>
+          <h3>{name}</h3>
+          <h4>{cuisines.join(", ")}</h4>
+        </div>
+        <div className="rating-container">
+          <h4 className="rating">
+            <span className={ avgRating >= 4.5 ? 'rating-green' : avgRating >= 4.0 ? 'rating-yellow' : 'rating-red' }>
+              {avgRating}
+            </span> stars
+          </h4>
+        </div>
+      </div>
     </div>
   );
 };

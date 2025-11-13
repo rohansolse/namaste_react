@@ -13,6 +13,9 @@
   padding: 0 40px;
   align-items: center;
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .logo-text {
@@ -79,6 +82,8 @@
   padding: 10px;
   cursor: pointer;
   transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
 }
 
 .restaurant-card:hover {
@@ -92,6 +97,13 @@
   border-radius: 8px;
 }
 
+.res-card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* This is the key change */
+  flex-grow: 1;
+}
+
 .restaurant-card h3 {
   font-size: 18px;
   margin: 10px 0;
@@ -102,6 +114,14 @@
   color: #666;
   margin: 5px 0;
   font-weight: normal;
+  /* The following lines prevent the cuisines from taking too much space */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.rating {
+  margin-top: 5px;
 }
 
 .restaurant-card h4 .rating-green,
