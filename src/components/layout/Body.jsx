@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import RestaurantCard from "../restaurant/RestaurantCard.js";
+import Shimmer from "./Shimmer.jsx";
 import { TOP_RATING_CUTOFF } from "../../utils/constants.js";
 
 const Body = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [allRestaurants, setAllRestaurants] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
+        setLoading(true);
         const response = await fetch(
           "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9351929&lng=77.62448069999999&page_type=DESKTOP_WEB_LISTING"
         );
@@ -28,6 +31,8 @@ const Body = () => {
         console.error("Failed to fetch restaurants from Swiggy", error);
         setRestaurants([]);
         setAllRestaurants([]);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -52,11 +57,15 @@ const Body = () => {
         <button className="filter-btn">Lowest Rated Restaurants</button>
         <button className="filter-btn">Highest Rated Restaurants</button>
       </div>
-      <div className="restaurant-container">
-        {restaurants.map((restaurant) => (
-          <RestaurantCard key={restaurant.info.id} resData={restaurant} />
-        ))}
-      </div>
+      {loading ? (
+        <Shimmer />
+      ) : (
+        <div className="restaurant-container">
+          {restaurants.map((restaurant) => (
+            <RestaurantCard key={restaurant.info.id} resData={restaurant} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
