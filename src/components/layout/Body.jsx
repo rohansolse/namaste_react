@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import RestaurantCard from "../restaurant/RestaurantCard.js";
-import resList from "../../utils/mockData.js";
 import { TOP_RATING_CUTOFF } from "../../utils/constants.js";
 
 const Body = () => {
@@ -15,22 +14,20 @@ const Body = () => {
         );
         const json = await response.json();
 
-        // Swiggy response nests restaurants inside cards; fallback to mock data if missing.
+        // Swiggy response nests restaurants inside cards.
         const cards = json?.data?.cards || [];
         const restaurantCard = cards.find(
           (card) => card?.card?.card?.gridElements?.infoWithStyle?.restaurants
         );
-        console.log("restaurantCard : ",  restaurantCard);
         const swiggyList =
-        restaurantCard?.card?.card?.gridElements?.infoWithStyle?.restaurants;
-        console.log("swiggyList : ",  swiggyList);
-        const list = swiggyList?.length ? swiggyList : resList;
-        setRestaurants(list);
-        setAllRestaurants(list);
+          restaurantCard?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
+
+        setRestaurants(swiggyList);
+        setAllRestaurants(swiggyList);
       } catch (error) {
         console.error("Failed to fetch restaurants from Swiggy", error);
-        setRestaurants(resList);
-        setAllRestaurants(resList);
+        setRestaurants([]);
+        setAllRestaurants([]);
       }
     };
 
