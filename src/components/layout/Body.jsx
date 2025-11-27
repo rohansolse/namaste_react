@@ -4,7 +4,7 @@ import resList from "../../utils/mockData.js";
 import { TOP_RATING_CUTOFF } from "../../utils/constants.js";
 
 const Body = () => {
-  const [restaurants, setRestaurants] = useState([]);
+  const [restaurants, setRestaurants] = useState(resList);
 
 
   const handleTopRated = () => {
