@@ -199,6 +199,12 @@
   background-color: #87ceeb;
 }
 
+.search-btn:disabled {
+  background-color: #d9e4ea;
+  color: #7a8a95;
+  cursor: not-allowed;
+}
+
 .footer {
   background-color: #333;
   color: white;

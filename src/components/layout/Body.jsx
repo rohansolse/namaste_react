@@ -7,6 +7,7 @@ const Body = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [allRestaurants, setAllRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     const fetchRestaurants = async () => {
@@ -46,11 +47,44 @@ const Body = () => {
     setRestaurants(filteredList);
   };
 
+  const handleSearchInputChange = (event) => {
+    const value = event.target.value;
+    setSearchText(value);
+
+    if (!value.trim()) {
+      setRestaurants(allRestaurants);
+    }
+  };
+
+  const handleSearch = () => {
+    if (!searchText.trim()) {
+      setRestaurants(allRestaurants);
+      return;
+    }
+
+    const filteredList = allRestaurants.filter(({ info }) =>
+      info?.name?.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setRestaurants(filteredList);
+  };
+
   return (
     <div className="body">
       <div className="search">
-        <input type="text" className="search-box" placeholder="Search for restaurants..." />
-        <button className="search-btn">Search</button>
+        <input
+          type="text"
+          className="search-box"
+          placeholder="Search for restaurants..."
+          value={searchText}
+          onChange={handleSearchInputChange}
+        />
+        <button
+          className="search-btn"
+          onClick={handleSearch}
+          disabled={!searchText.trim()}
+        >
+          Search
+        </button>
       </div>
       <div className="filter">
         <button className="filter-btn" onClick={handleTopRated}>Top Rated Restaurants</button>
