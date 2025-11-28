@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import RestaurantCard from "../restaurant/RestaurantCard.js";
 import Shimmer from "./Shimmer.jsx";
-import { TOP_RATING_CUTOFF } from "../../utils/constants.js";
+import { TOP_RATING_CUTOFF, NO_RESULTS_COUNTDOWN } from "../../utils/constants.js";
 
 const Body = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -75,7 +75,7 @@ const Body = () => {
     setSearchPerformed(true);
 
     if (filteredList.length === 0) {
-      setCountdown(5);
+      setCountdown(NO_RESULTS_COUNTDOWN);
     } else {
       setCountdown(null);
     }
@@ -94,7 +94,7 @@ const Body = () => {
 
     const timer = setTimeout(() => setCountdown((prev) => prev - 1), 1000);
     return () => clearTimeout(timer);
-  }, [countdown, allRestaurants]);
+  }, [countdown]);
 
   return (
     <div className="body">
