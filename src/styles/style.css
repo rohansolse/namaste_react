@@ -51,20 +51,35 @@
   color: #e15941;
 }
 
-.login-btn {
+.login-btn,
+.logout-btn {
   padding: 8px 20px;
-  background-color: transparent;
-  border: 1px solid #e15941;
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
-  color: #e15941;
   transition: all 0.2s ease-in-out;
 }
 
-.login-btn:hover {
+.login-btn {
   background-color: #e15941;
-  color: white;
+  color: #fff;
+  border: 1px solid #e15941;
+}
+
+.login-btn:hover {
+  background-color: #f06d57;
+  border-color: #f06d57;
+}
+
+.logout-btn {
+  background-color: #f0f2f4;
+  color: #333;
+  border: 1px solid #d5d9df;
+}
+
+.logout-btn:hover {
+  background-color: #e1e5ea;
+  color: #111;
 }
 
 .restaurant-container {
@@ -184,6 +199,33 @@
   background-color: #87ceeb;
 }
 
+.search-btn:disabled {
+  background-color: #d9e4ea;
+  color: #7a8a95;
+  cursor: not-allowed;
+}
+
+.no-results {
+  text-align: center;
+  margin: 40px auto;
+  padding: 20px 24px;
+  max-width: 420px;
+  background-color: #fff;
+  border: 1px solid #e3e6e8;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+.no-results h3 {
+  margin: 0 0 8px 0;
+  color: #e15941;
+}
+
+.no-results p {
+  margin: 0;
+  color: #555;
+}
+
 .footer {
   background-color: #333;
   color: white;
@@ -234,6 +276,85 @@
 .filter-btn:hover {
   background-color: #87ceeb;
 } 
+
+#heading {
+  color: lightcoral;
+}
+
+.app-layout {
+  background-color: #f8f9fa; /* Light background for the whole page */
+}
+
+.header {
+  display: flex;
+  background-color: white;
+  justify-content: space-between;
+  padding: 0 40px;
+  align-items: center;
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo-text {
+  font-size: 28px;
+  color: #e15941; /* Use a brand color */
+  font-weight: bold;
+}
+
+.nav-items {
+  display: flex;
+  list-style-type: none;
+  gap: 20px;
+  margin-left: auto;
+  align-items: center;
+}
+
+/* Shimmer loader */
+.shimmer-card {
+  width: 220px;
+  padding: 10px;
+  border-radius: 8px;
+  background: #f0f0f0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.shimmer-banner,
+.shimmer-line {
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 0%,
+    #e6e6e6 50%,
+    #f0f0f0 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.shimmer-banner {
+  height: 150px;
+  margin-bottom: 12px;
+}
+
+.shimmer-line {
+  height: 14px;
+  margin-bottom: 8px;
+}
+
+.shimmer-line.short {
+  width: 60%;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
 
 #heading {
   color: lightcoral;
