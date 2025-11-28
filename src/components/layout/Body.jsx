@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import RestaurantCard from "../restaurant/RestaurantCard.js";
 import Shimmer from "./Shimmer.jsx";
-import { TOP_RATING_CUTOFF } from "../../utils/constants.js";
+import { TOP_RATING_CUTOFF, SWIGGY_API_URL, CORS_PROXIES } from "../../utils/constants.js";
 
 const Body = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -14,10 +14,22 @@ const Body = () => {
     const fetchRestaurants = async () => {
       try {
         setLoading(true);
-        const response = await fetch(
-          "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9351929&lng=77.62448069999999&page_type=DESKTOP_WEB_LISTING"
-        );
-        const json = await response.json();
+        let json = null;
+
+        for (const proxy of CORS_PROXIES) {
+          try {
+            const response = await fetch(`${proxy}${encodeURIComponent(SWIGGY_API_URL)}`);
+            if (!response.ok) continue;
+            json = await response.json();
+            break;
+          } catch {
+            // try next proxy
+          }
+        }
+
+        if (!json) {
+          throw new Error("All CORS proxy attempts failed");
+        }
 
         // Swiggy response nests restaurants inside cards.
         const cards = json?.data?.cards || [];
