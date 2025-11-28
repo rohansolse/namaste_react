@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import RestaurantCard from "../restaurant/RestaurantCard.js";
 import Shimmer from "./Shimmer.jsx";
-import { TOP_RATING_CUTOFF, NO_RESULTS_COUNTDOWN } from "../../utils/constants.js";
+import { TOP_RATING_CUTOFF } from "../../utils/constants.js";
 
 const Body = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -9,7 +9,6 @@ const Body = () => {
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [searchPerformed, setSearchPerformed] = useState(false);
-  const [countdown, setCountdown] = useState(null);
 
   useEffect(() => {
     const fetchRestaurants = async () => {
@@ -53,48 +52,34 @@ const Body = () => {
     const value = event.target.value;
     setSearchText(value);
 
-    if (!value.trim()) {
+    const trimmed = value.trim();
+    if (!trimmed) {
       setRestaurants(allRestaurants);
       setSearchPerformed(false);
-      setCountdown(null);
-    }
-  };
-
-  const handleSearch = () => {
-    if (!searchText.trim()) {
-      setRestaurants(allRestaurants);
-      setSearchPerformed(false);
-      setCountdown(null);
       return;
     }
 
     const filteredList = allRestaurants.filter(({ info }) =>
-      info?.name?.toLowerCase().includes(searchText.toLowerCase())
+      info?.name?.toLowerCase().includes(trimmed.toLowerCase())
     );
     setRestaurants(filteredList);
     setSearchPerformed(true);
-
-    if (filteredList.length === 0) {
-      setCountdown(NO_RESULTS_COUNTDOWN);
-    } else {
-      setCountdown(null);
-    }
   };
 
-  useEffect(() => {
-    if (countdown === null) return;
-
-    if (countdown <= 0) {
-      setSearchText("");
+  const handleSearch = () => {
+    const trimmed = searchText.trim();
+    if (!trimmed) {
       setRestaurants(allRestaurants);
       setSearchPerformed(false);
-      setCountdown(null);
       return;
     }
 
-    const timer = setTimeout(() => setCountdown((prev) => prev - 1), 1000);
-    return () => clearTimeout(timer);
-  }, [countdown]);
+    const filteredList = allRestaurants.filter(({ info }) =>
+      info?.name?.toLowerCase().includes(trimmed.toLowerCase())
+    );
+    setRestaurants(filteredList);
+    setSearchPerformed(true);
+  };
 
   return (
     <div className="body">
@@ -124,9 +109,6 @@ const Body = () => {
       ) : restaurants.length === 0 && searchPerformed ? (
         <div className="no-results">
           <h3>No restaurants found by this name.</h3>
-          {countdown !== null && (
-            <p>Resetting search in {countdown} second{countdown === 1 ? "" : "s"}...</p>
-          )}
         </div>
       ) : (
         <div className="restaurant-container">
