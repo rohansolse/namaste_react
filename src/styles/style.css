@@ -51,20 +51,35 @@
   color: #e15941;
 }
 
-.login-btn {
+.login-btn,
+.logout-btn {
   padding: 8px 20px;
-  background-color: transparent;
-  border: 1px solid #e15941;
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
-  color: #e15941;
   transition: all 0.2s ease-in-out;
 }
 
-.login-btn:hover {
+.login-btn {
   background-color: #e15941;
-  color: white;
+  color: #fff;
+  border: 1px solid #e15941;
+}
+
+.login-btn:hover {
+  background-color: #f06d57;
+  border-color: #f06d57;
+}
+
+.logout-btn {
+  background-color: #f0f2f4;
+  color: #333;
+  border: 1px solid #d5d9df;
+}
+
+.logout-btn:hover {
+  background-color: #e1e5ea;
+  color: #111;
 }
 
 .restaurant-container {
