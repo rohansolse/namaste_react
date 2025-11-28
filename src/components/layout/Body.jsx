@@ -8,6 +8,8 @@ const Body = () => {
   const [allRestaurants, setAllRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
+  const [searchPerformed, setSearchPerformed] = useState(false);
+  const [countdown, setCountdown] = useState(null);
 
   useEffect(() => {
     const fetchRestaurants = async () => {
@@ -53,12 +55,16 @@ const Body = () => {
 
     if (!value.trim()) {
       setRestaurants(allRestaurants);
+      setSearchPerformed(false);
+      setCountdown(null);
     }
   };
 
   const handleSearch = () => {
     if (!searchText.trim()) {
       setRestaurants(allRestaurants);
+      setSearchPerformed(false);
+      setCountdown(null);
       return;
     }
 
@@ -66,7 +72,29 @@ const Body = () => {
       info?.name?.toLowerCase().includes(searchText.toLowerCase())
     );
     setRestaurants(filteredList);
+    setSearchPerformed(true);
+
+    if (filteredList.length === 0) {
+      setCountdown(5);
+    } else {
+      setCountdown(null);
+    }
   };
+
+  useEffect(() => {
+    if (countdown === null) return;
+
+    if (countdown <= 0) {
+      setSearchText("");
+      setRestaurants(allRestaurants);
+      setSearchPerformed(false);
+      setCountdown(null);
+      return;
+    }
+
+    const timer = setTimeout(() => setCountdown((prev) => prev - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [countdown, allRestaurants]);
 
   return (
     <div className="body">
@@ -93,6 +121,13 @@ const Body = () => {
       </div>
       {loading ? (
         <Shimmer />
+      ) : restaurants.length === 0 && searchPerformed ? (
+        <div className="no-results">
+          <h3>No restaurants found by this name.</h3>
+          {countdown !== null && (
+            <p>Resetting search in {countdown} second{countdown === 1 ? "" : "s"}...</p>
+          )}
+        </div>
       ) : (
         <div className="restaurant-container">
           {restaurants.map((restaurant) => (
