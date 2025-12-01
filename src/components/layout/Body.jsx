@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import RestaurantCard from "../restaurant/RestaurantCard.js";
 import Shimmer from "./Shimmer.jsx";
-import { TOP_RATING_CUTOFF, SWIGGY_API_URL, CORS_PROXIES } from "../../utils/constants.js";
+import {
+  TOP_RATING_CUTOFF,
+  SWIGGY_API_URL,
+  CORS_PROXIES,
+  FALLBACK_RESTAURANTS,
+} from "../../utils/constants.js";
 
 const Body = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -9,16 +15,23 @@ const Body = () => {
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [searchPerformed, setSearchPerformed] = useState(false);
+  const [fetchError, setFetchError] = useState("");
 
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
         setLoading(true);
+        setFetchError("");
         let json = null;
 
         for (const proxy of CORS_PROXIES) {
           try {
-            const response = await fetch(`${proxy}${encodeURIComponent(SWIGGY_API_URL)}`);
+            const url = `${proxy.prefix}${
+              proxy.encode === false ? SWIGGY_API_URL : encodeURIComponent(SWIGGY_API_URL)
+            }`;
+            const response = await fetch(url, {
+              headers: proxy.headers,
+            });
             if (!response.ok) continue;
             json = await response.json();
             break;
@@ -39,12 +52,19 @@ const Body = () => {
         const swiggyList =
           restaurantCard?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
 
-        setRestaurants(swiggyList);
-        setAllRestaurants(swiggyList);
+        if (swiggyList.length > 0) {
+          setRestaurants(swiggyList);
+          setAllRestaurants(swiggyList);
+        } else {
+          setFetchError("Live data unavailable. Showing sample restaurants.");
+          setRestaurants(FALLBACK_RESTAURANTS);
+          setAllRestaurants(FALLBACK_RESTAURANTS);
+        }
       } catch (error) {
         console.log("Failed to fetch restaurants from Swiggy", error);
-        setRestaurants([]);
-        setAllRestaurants([]);
+        setFetchError("Live data unavailable. Showing sample restaurants.");
+        setRestaurants(FALLBACK_RESTAURANTS);
+        setAllRestaurants(FALLBACK_RESTAURANTS);
       } finally {
         setLoading(false);
       }
@@ -95,6 +115,7 @@ const Body = () => {
 
   return (
     <div className="body">
+      {fetchError ? <div className="fetch-error">{fetchError}</div> : null}
       <div className="search">
         <input
           type="text"
@@ -125,7 +146,13 @@ const Body = () => {
       ) : (
         <div className="restaurant-container">
           {restaurants.map((restaurant) => (
-            <RestaurantCard key={restaurant.info.id} resData={restaurant} />
+            <Link
+              key={restaurant.info.id}
+              to={`/restaurant/${restaurant.info.id}`}
+              className="restaurant-card-link"
+            >
+              <RestaurantCard resData={restaurant} />
+            </Link>
           ))}
         </div>
       )}
