@@ -11,3 +11,28 @@ export const CORS_PROXIES = [
   "https://corsproxy.io/?",
 ];
 export const NO_RESULTS_COUNTDOWN = 5;
+
+export const MENU_SECTIONS = [
+  {
+    title: "Popular Picks",
+    items: [
+      "Classic Margherita Pizza",
+      "Paneer Tikka Wrap",
+      "Spicy Ramen Bowl",
+      "Loaded Nachos",
+    ],
+  },
+  {
+    title: "Healthy Bites",
+    items: [
+      "Grilled Veggie Salad",
+      "Quinoa Power Bowl",
+      "Fresh Fruit Platter",
+      "Avocado Toast",
+    ],
+  },
+  {
+    title: "Desserts",
+    items: ["Chocolate Lava Cake", "Blueberry Cheesecake", "Tiramisu"],
+  },
+];

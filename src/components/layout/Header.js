@@ -1,8 +1,17 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useMemo, useState } from "react";
+import { NavLink } from "react-router-dom";
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navLinks = useMemo(
+    () => [
+      { to: "/", label: "Home", end: true },
+      { to: "/menu", label: "Menu" },
+      { to: "/about", label: "About" },
+      { to: "/cart", label: "Cart" },
+    ],
+    []
+  );
 
   return (
     <div className="header">
@@ -11,10 +20,19 @@ const Header = () => {
       </div>
       <div className="nav-items">
         <ul>
-          <li><Link to="/">Home</Link></li>
-          <li>Menu</li>
-          <li><Link to="/about">About</Link></li>
-          <li>Cart</li>
+          {navLinks.map(({ to, label, end }) => (
+            <li key={to}>
+              <NavLink
+                to={to}
+                end={end}
+                className={({ isActive }) =>
+                  isActive ? "nav-link active" : "nav-link"
+                }
+              >
+                {label}
+              </NavLink>
+            </li>
+          ))}
         </ul>
         {isLoggedIn ? (
           <button className="logout-btn" onClick={() => setIsLoggedIn(false)}>
