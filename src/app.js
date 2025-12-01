@@ -2,12 +2,14 @@ import ReactDOM from "react-dom/client";
 import AppLayout from "./components/layout/AppLayout";
 import About from "./components/layout/About";
 import Body from "./components/layout/Body";
+import Error from "./components/layout/Error";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <AppLayout />,
+    errorElement: <Error />,
     children: [
       { index: true, element: <Body /> },
       { path: "about", element: <About /> },

@@ -42,7 +42,7 @@ const Body = () => {
         setRestaurants(swiggyList);
         setAllRestaurants(swiggyList);
       } catch (error) {
-        console.error("Failed to fetch restaurants from Swiggy", error);
+        console.log("Failed to fetch restaurants from Swiggy", error);
         setRestaurants([]);
         setAllRestaurants([]);
       } finally {
